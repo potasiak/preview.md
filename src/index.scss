@@ -1,0 +1,53 @@
+//@import 'bootstrap/scss/bootstrap.scss';
+
+//* {
+//  outline: 1px solid red;
+//}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+//
+//#root {
+//  display: flex;
+//  flex-direction: column;
+//}
+//
+//.app {
+//  position: relative;
+//  display: flex;
+//  flex: 1;
+//  overflow: hidden;
+//}
+//
+//.pane {
+//  flex-basis: 50%;
+//  flex-shrink: 0;
+//  flex-grow: 0;
+//  padding: 1em;
+//}
+//
+//.editor-pane {
+//  display: flex;
+//  flex-direction: column;
+//}
+//
+//.scrollable {
+//  overflow-y: scroll;
+//}
+//
+//.separator {
+//  width: 0.25rem;
+//  background-color: var(--bs-border-color);
+//}
+//
+//.editor {
+//  flex: 1;
+//  font-family: var(--bs-font-monospace);
+//  resize: none;
+//}
+//
+//.markdown-body {
+//  all: unset;
+//}
