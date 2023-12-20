@@ -9,8 +9,10 @@
 .markdown-body {
   ul {
     list-style: disc;
+
     ul {
       list-style: circle;
+
       ul {
         list-style: square;
       }
@@ -19,5 +21,9 @@
 
   ol {
     list-style: decimal;
+  }
+
+  pre {
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
   }
 }
