@@ -1,13 +1,23 @@
-//@import 'bootstrap/scss/bootstrap.scss';
-
-//* {
-//  outline: 1px solid red;
-//}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .cm-content pre {
   word-break: break-word;
+}
+
+.markdown-body {
+  ul {
+    list-style: disc;
+    ul {
+      list-style: circle;
+      ul {
+        list-style: square;
+      }
+    }
+  }
+
+  ol {
+    list-style: decimal;
+  }
 }
