@@ -6,6 +6,11 @@
   word-break: break-word;
 }
 
+.cm-scroller {
+  font-size: 0.875em;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace !important;
+}
+
 .markdown-body {
   ul {
     list-style: disc;

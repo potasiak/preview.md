@@ -86,31 +86,31 @@ export const App = () => {
   return (
     <React.Fragment>
       <header className="bg-white shadow">
-        <nav className="flex justify-between align-center px-6 py-4 gap-6">
-          <div className="flex align-center gap-7">
-            <Link className="font-semibold text-gray-900 hover:text-blue-600 py-2" to="/">
-              Markdown Preview
-            </Link>
-            <div className="flex gap-4">
-              <button
-                type="button"
-                className="border border-blue-600 text-blue-600 rounded-md px-3 py-2 text-sm font-semibold hover:text-white shadow-sm hover:bg-blue-600 active:bg-blue-700"
-                onClick={copyMarkdown}
-              >
-                Copy Markdown
-              </button>
-              <button
-                type="button"
-                className="border border-blue-600 text-blue-600 rounded-md px-3 py-2 text-sm font-semibold hover:text-white shadow-sm hover:bg-blue-600 active:bg-blue-700"
-                onClick={copyHTML}
-              >
-                Copy HTML
-              </button>
+        <nav className="flex justify-between align-center px-6 py-4 gap-6 bg-gray-900 text-white">
+          <Link className="font-medium text-gray-100 hover:text-blue-400" to="/">
+            Markdown Preview
+          </Link>
+          <div className="flex align-center gap-4 ms-auto">
+            <div className="flex align-center gap-2">
+              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer" checked={scrollSync} onChange={handleChangeScrollSync} />
+              <label htmlFor="id_scrollSync" className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-0.5">
+                Scroll sync
+              </label>
             </div>
-          </div>
-          <div className="flex gap-2 ms-auto py-2">
-            <input type="checkbox" id="id_scrollSync" checked={scrollSync} onChange={handleChangeScrollSync} />
-            <label htmlFor="id_scrollSync">Scroll sync</label>
+            <button
+              type="button"
+              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+              onClick={copyMarkdown}
+            >
+              Copy Markdown
+            </button>
+            <button
+              type="button"
+              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+              onClick={copyHTML}
+            >
+              Copy HTML
+            </button>
           </div>
         </nav>
       </header>
