@@ -22,12 +22,23 @@ import { githubLight } from '@uiw/codemirror-theme-github';
 
 import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync/src';
 
+import copy from 'copy-to-clipboard';
+
 
 export const App = () => {
   const [ content, setContent ] = React.useState(defaultContent);
   const [ scrollSync, setScrollSync ] = React.useState(true);
 
   const handleChangeScrollSync = (e) => setScrollSync(e.target.checked);
+
+  const copyMarkdown = () => {
+    copy(content);
+  };
+
+  const copyHTML = () => {
+    const htmlContent = document.getElementsByClassName('markdown-body')[0];
+    copy(htmlContent.outerHTML, { format: 'text/html' });
+  };
 
   const markdownComponents = {
     code({ node, inline, className, ...props }) {
@@ -51,7 +62,7 @@ export const App = () => {
         }
       };
 
-      const PreTag = ({ children }) => <React.Fragment>{children}</React.Fragment>
+      const PreTag = ({ children }) => <React.Fragment>{children}</React.Fragment>;
       const CodeTag = ({ children }) => <code className={className}>{children}</code>;
 
       return hasLang ? (
@@ -78,6 +89,22 @@ export const App = () => {
         <Link className="font-medium hover:underline" to="/">
           Markdown Preview
         </Link>
+        <div className="flex gap-2 ms-4 me-auto">
+          <button
+            type="button"
+            className="text-sm bg-neutral-300 px-2 rounded-sm border-neutral-400 border hover:bg-neutral-400 hover:border-neutral-500"
+            onClick={copyMarkdown}
+          >
+            Copy Markdown
+          </button>
+          <button
+            type="button"
+            className="text-sm bg-neutral-300 px-2 rounded-sm border-neutral-400 border hover:bg-neutral-400 hover:border-neutral-500"
+            onClick={copyHTML}
+          >
+            Copy HTML
+          </button>
+        </div>
         <div className="flex gap-2 ms-auto">
           <input type="checkbox" id="id_scrollSync" checked={scrollSync} onChange={handleChangeScrollSync} />
           <label htmlFor="id_scrollSync">Scroll sync</label>
