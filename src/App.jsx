@@ -85,35 +85,39 @@ export const App = () => {
 
   return (
     <React.Fragment>
-      <header className="flex bg-gray-200 px-4 py-2">
-        <Link className="font-medium hover:underline" to="/">
-          Markdown Preview
-        </Link>
-        <div className="flex gap-2 ms-4 me-auto">
-          <button
-            type="button"
-            className="text-sm bg-neutral-300 px-2 rounded-sm border-neutral-400 border hover:bg-neutral-400 hover:border-neutral-500"
-            onClick={copyMarkdown}
-          >
-            Copy Markdown
-          </button>
-          <button
-            type="button"
-            className="text-sm bg-neutral-300 px-2 rounded-sm border-neutral-400 border hover:bg-neutral-400 hover:border-neutral-500"
-            onClick={copyHTML}
-          >
-            Copy HTML
-          </button>
-        </div>
-        <div className="flex gap-2 ms-auto">
-          <input type="checkbox" id="id_scrollSync" checked={scrollSync} onChange={handleChangeScrollSync} />
-          <label htmlFor="id_scrollSync">Scroll sync</label>
-        </div>
+      <header className="bg-white shadow">
+        <nav className="flex justify-between align-center px-6 py-4 gap-6">
+          <div className="flex align-center gap-7">
+            <Link className="font-semibold text-gray-900 hover:text-blue-600 py-2" to="/">
+              Markdown Preview
+            </Link>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                className="border border-blue-600 text-blue-600 rounded-md px-3 py-2 text-sm font-semibold hover:text-white shadow-sm hover:bg-blue-600 active:bg-blue-700"
+                onClick={copyMarkdown}
+              >
+                Copy Markdown
+              </button>
+              <button
+                type="button"
+                className="border border-blue-600 text-blue-600 rounded-md px-3 py-2 text-sm font-semibold hover:text-white shadow-sm hover:bg-blue-600 active:bg-blue-700"
+                onClick={copyHTML}
+              >
+                Copy HTML
+              </button>
+            </div>
+          </div>
+          <div className="flex gap-2 ms-auto py-2">
+            <input type="checkbox" id="id_scrollSync" checked={scrollSync} onChange={handleChangeScrollSync} />
+            <label htmlFor="id_scrollSync">Scroll sync</label>
+          </div>
+        </nav>
       </header>
       <ScrollSync enabled={scrollSync}>
-        <main className="flex flex-1 overflow-hidden">
+        <main className="flex flex-1 gap-4 p-4 overflow-hidden">
           <ScrollSyncPane>
-            <div className="box-border flex flex-col basis-1/2 shrink-0 grow-0 overflow-y-scroll">
+            <div className="box-border flex flex-col flex-1 rounded-md shadow overflow-y-scroll">
               <CodeMirror
                 theme={githubLight}
                 extensions={[
@@ -126,7 +130,7 @@ export const App = () => {
             </div>
           </ScrollSyncPane>
           <ScrollSyncPane>
-            <div className="box-border flex flex-col p-4 basis-1/2 shrink-0 grow-0 overflow-y-scroll">
+            <div className="box-border flex flex-col flex-1 rounded-md shadow px-4 py-2 bg-white overflow-y-scroll">
               <Markdown
                 className="markdown-body"
                 components={markdownComponents}
