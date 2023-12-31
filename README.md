@@ -6,6 +6,8 @@ preview.md
 This is a repository used for [preview.md](https://preview.md) - an online 
 Markdown editor with live preview.
 
+![Screenshot](screenshot.png)
+
 ## Features
 
 - Github-inspired Markdown rendering, including syntax highlighting in the code blocks.
