@@ -23,6 +23,7 @@ import { githubLight } from '@uiw/codemirror-theme-github';
 import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync/src';
 
 import copy from 'copy-to-clipboard';
+import { Github } from './icons.jsx';
 
 
 export const App = () => {
@@ -111,6 +112,9 @@ export const App = () => {
             >
               Copy HTML
             </button>
+            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github" className="my-1">
+              <Github className="w-4 h-4" />
+            </a>
           </div>
         </nav>
       </header>
