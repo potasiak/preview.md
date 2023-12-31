@@ -23,17 +23,31 @@ import { githubLight } from '@uiw/codemirror-theme-github';
 import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync/src';
 
 import copy from 'copy-to-clipboard';
-import { Github } from './icons.jsx';
+import { Github, Horizontal, Vertical } from './icons.jsx';
 import classNames from 'classnames';
 
 
 export const App = () => {
   const [ content, setContent ] = React.useState(defaultContent);
   const [ scrollSync, setScrollSync ] = React.useState(true);
+  const [ orientation, setOrientation ] = React.useState(() => {
+    let value = localStorage.getItem('orientation');
+    if (value !== 'horizontal' && value !== 'vertical') {
+      localStorage.removeItem('orientation');
+      value = innerWidth >= innerHeight ? 'horizontal' : 'vertical';
+    }
+    return value;
+  });
   const [ markdownCopied, setMarkdownCopied ] = React.useState(null);
   const [ htmlCopied, setHtmlCopied ] = React.useState(null);
 
   const handleChangeScrollSync = (e) => setScrollSync(e.target.checked);
+
+  const handleToggleOrientation = () => setOrientation(prevOrientation => {
+    const newOrientation = prevOrientation === 'horizontal' ? 'vertical' : 'horizontal';
+    localStorage.setItem('orientation', newOrientation);
+    return newOrientation;
+  });
 
   const copyMarkdown = () => {
     copy(content);
@@ -117,6 +131,18 @@ export const App = () => {
                 Scroll sync
               </label>
             </div>
+            <button
+              type="button"
+              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+              title="Change orientation"
+              onClick={handleToggleOrientation}
+            >
+              {orientation === 'vertical' ? (
+                <Horizontal className="w-4 h-4 my-1" />
+              ) : (
+                <Vertical className="w-4 h-4 my-1" />
+              )}
+            </button>
             <div className="group relative">
               <button
                 type="button"
@@ -171,14 +197,14 @@ export const App = () => {
                 Copied!
               </span>
             </div>
-            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github" className="my-1">
-              <Github className="w-4 h-4" />
+            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github">
+              <Github className="w-4 h-4 my-1" />
             </a>
           </div>
         </nav>
       </header>
       <ScrollSync enabled={scrollSync}>
-        <main className="flex flex-1 gap-4 p-4 overflow-hidden">
+        <main className={classNames('flex', 'flex-1', 'gap-4', 'p-4', 'overflow-hidden', orientation === 'vertical' ? 'flex-col' : 'flex-row')}>
           <ScrollSyncPane>
             <div className="box-border flex flex-col flex-1 rounded-md shadow overflow-y-scroll">
               <CodeMirror
