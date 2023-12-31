@@ -23,12 +23,13 @@ import { githubLight } from '@uiw/codemirror-theme-github';
 import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync/src';
 
 import copy from 'copy-to-clipboard';
-import { Github, Horizontal, Vertical } from './icons.jsx';
+import { Markdown as MarkdownLogo, Github, Horizontal, Vertical, List } from './icons.jsx';
 import classNames from 'classnames';
 
 
 export const App = () => {
   const [ content, setContent ] = React.useState(defaultContent);
+  const [ showMenu, setShowMenu ] = React.useState(false);
   const [ scrollSync, setScrollSync ] = React.useState(true);
   const [ orientation, setOrientation ] = React.useState(() => {
     let value = localStorage.getItem('orientation');
@@ -40,6 +41,8 @@ export const App = () => {
   });
   const [ markdownCopied, setMarkdownCopied ] = React.useState(null);
   const [ htmlCopied, setHtmlCopied ] = React.useState(null);
+
+  const handleToggleMenu = () => setShowMenu(prevState => !prevState);
 
   const handleChangeScrollSync = (e) => setScrollSync(e.target.checked);
 
@@ -118,22 +121,36 @@ export const App = () => {
   return (
     <React.Fragment>
       <header className="bg-white shadow">
-        <nav className="flex justify-between align-center px-6 py-4 gap-6 bg-gray-900 text-white">
-          <Link className="font-medium text-gray-100 hover:text-blue-400" to="/">
-            Markdown Preview
-          </Link>
-          <div className="flex align-center gap-4 ms-auto">
-            <div className="flex align-center gap-2">
-              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer" checked={scrollSync}
+        <nav className="flex flex-col md:flex-row justify-between align-center px-6 py-4 md:gap-6 bg-gray-900 text-white">
+          <div className="flex flex-1 md:flex-none">
+            <Link className="font-medium text-gray-100 hover:text-blue-400 flex gap-2" to="/">
+              <MarkdownLogo className="w-6 h-6" />
+              Markdown Preview
+            </Link>
+            <button type="button" className="md:hidden ms-auto" onClick={handleToggleMenu}>
+              <List className="w-6 h-6" />
+            </button>
+          </div>
+          <div className={classNames(
+            showMenu || 'hidden',
+            'md:flex',
+            'align-center',
+            'gap-4',
+            'md:ms-auto',
+            'mt-4',
+            'md:mt-0'
+          )}>
+            <div className="flex align-center gap-2 mb-2 md:mb-0">
+              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer w-4 md:w-auto" checked={scrollSync}
                      onChange={handleChangeScrollSync} />
               <label htmlFor="id_scrollSync"
-                     className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-0.5">
+                     className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-2 md:py-0.5">
                 Scroll sync
               </label>
             </div>
             <button
               type="button"
-              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300 flex gap-2 align-center mb-2 md:mb-0 py-2 md:py-0"
               title="Change orientation"
               onClick={handleToggleOrientation}
             >
@@ -142,11 +159,12 @@ export const App = () => {
               ) : (
                 <Vertical className="w-4 h-4 my-1" />
               )}
+              <span className="md:hidden py-0.5">Change orientation</span>
             </button>
-            <div className="group relative">
+            <div className="group relative mb-2 md:mb-0">
               <button
                 type="button"
-                className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+                className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300 py-2 md:py-0"
                 onClick={copyMarkdown}
               >
                 Copy Markdown
@@ -170,10 +188,10 @@ export const App = () => {
                 Copied!
               </span>
             </div>
-            <div className="group relative">
+            <div className="group relative mb-2 md:mb-0">
               <button
                 type="button"
-                className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+                className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300 py-2 md:py-0"
                 onClick={copyHTML}
               >
                 Copy HTML
@@ -197,14 +215,16 @@ export const App = () => {
                 Copied!
               </span>
             </div>
-            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github">
+            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github" className="flex gap-2 text-white hover:text-blue-400 active:text-blue-300 mb-2 md:mb-0 py-2 md:py-0">
               <Github className="w-4 h-4 my-1" />
+              <span className=" text-sm font-semibold md:hidden py-0.5">Source on Github</span>
             </a>
           </div>
         </nav>
       </header>
       <ScrollSync enabled={scrollSync}>
-        <main className={classNames('flex', 'flex-1', 'gap-4', 'p-4', 'overflow-hidden', orientation === 'vertical' ? 'flex-col' : 'flex-row')}>
+        <main
+          className={classNames('flex', 'flex-1', 'gap-4', 'p-4', 'overflow-hidden', orientation === 'vertical' ? 'flex-col' : 'flex-row')}>
           <ScrollSyncPane>
             <div className="box-border flex flex-col flex-1 rounded-md shadow overflow-y-scroll">
               <CodeMirror
