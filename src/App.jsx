@@ -136,31 +136,10 @@ export const App = () => {
             'md:flex',
             'align-center',
             'gap-4',
-            'md:ms-auto',
+            'md:me-auto',
             'mt-4',
             'md:mt-0'
           )}>
-            <div className="flex align-center gap-2 mb-2 md:mb-0">
-              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer w-4 md:w-auto" checked={scrollSync}
-                     onChange={handleChangeScrollSync} />
-              <label htmlFor="id_scrollSync"
-                     className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-2 md:py-0.5">
-                Scroll sync
-              </label>
-            </div>
-            <button
-              type="button"
-              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300 flex gap-2 align-center mb-2 md:mb-0 py-2 md:py-0"
-              title="Change orientation"
-              onClick={handleToggleOrientation}
-            >
-              {orientation === 'vertical' ? (
-                <Horizontal className="w-4 h-4 my-1" />
-              ) : (
-                <Vertical className="w-4 h-4 my-1" />
-              )}
-              <span className="md:hidden py-0.5">Change orientation</span>
-            </button>
             <div className="group relative mb-2 md:mb-0">
               <button
                 type="button"
@@ -215,6 +194,37 @@ export const App = () => {
                 Copied!
               </span>
             </div>
+          </div>
+          <div className={classNames(
+            showMenu || 'hidden',
+            'md:flex',
+            'align-center',
+            'gap-4',
+            'md:ms-auto',
+            'mt-4',
+            'md:mt-0'
+          )}>
+            <div className="flex align-center gap-2 mb-2 md:mb-0">
+              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer w-4 md:w-auto" checked={scrollSync}
+                     onChange={handleChangeScrollSync} />
+              <label htmlFor="id_scrollSync"
+                     className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-2 md:py-0.5">
+                Scroll sync
+              </label>
+            </div>
+            <button
+              type="button"
+              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300 flex gap-2 align-center mb-2 md:mb-0 py-2 md:py-0"
+              title="Change orientation"
+              onClick={handleToggleOrientation}
+            >
+              {orientation === 'vertical' ? (
+                <Horizontal className="w-4 h-4 my-1" />
+              ) : (
+                <Vertical className="w-4 h-4 my-1" />
+              )}
+              <span className="md:hidden py-0.5">Change orientation</span>
+            </button>
             <a href="https://github.com/potasiak/preview.md" title="preview.md on Github" className="flex gap-2 text-white hover:text-blue-400 active:text-blue-300 mb-2 md:mb-0 py-2 md:py-0">
               <Github className="w-4 h-4 my-1" />
               <span className=" text-sm font-semibold md:hidden py-0.5">Source on Github</span>
