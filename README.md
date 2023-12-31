@@ -16,6 +16,9 @@ Markdown editor with live preview.
 - Syntax highlighting in the code blocks in the editor.
 - Scroll synchronization.
 - Copy raw markdown or resulting HTML with one click.
+- Change panes orientation (horizontal / vertical).
+- Mobile support.
+- Saving state, including content, in local storage.
 
 ## Requirements
 

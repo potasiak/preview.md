@@ -27,10 +27,21 @@ import { Markdown as MarkdownLogo, Github, Horizontal, Vertical, List } from './
 import classNames from 'classnames';
 
 
+function getLocalStorage(key, defaultValue = null) {
+  const storedValue = localStorage.getItem(key);
+  return storedValue !== null ? storedValue : defaultValue;
+}
+
+function getLocalStorageBool(key, defaultValue = false) {
+  const storedValue = localStorage.getItem(key);
+  return storedValue !== null ? storedValue === 'true' : defaultValue;
+}
+
+
 export const App = () => {
-  const [ content, setContent ] = React.useState(defaultContent);
+  const [ content, setContent ] = React.useState(() => getLocalStorage('content', defaultContent));
   const [ showMenu, setShowMenu ] = React.useState(false);
-  const [ scrollSync, setScrollSync ] = React.useState(true);
+  const [ scrollSync, setScrollSync ] = React.useState(() => getLocalStorageBool('scrollSync', true));
   const [ orientation, setOrientation ] = React.useState(() => {
     let value = localStorage.getItem('orientation');
     if (value !== 'horizontal' && value !== 'vertical') {
@@ -41,8 +52,12 @@ export const App = () => {
   });
   const [ markdownCopied, setMarkdownCopied ] = React.useState(null);
   const [ htmlCopied, setHtmlCopied ] = React.useState(null);
+  const [ save, setSave ] = React.useState(() => getLocalStorageBool('save', false));
+  const [ saveState, setSaveState ] = React.useState(null);
 
   const handleToggleMenu = () => setShowMenu(prevState => !prevState);
+
+  const handleChangeSave = (e) => setSave(e.target.checked);
 
   const handleChangeScrollSync = (e) => setScrollSync(e.target.checked);
 
@@ -118,10 +133,65 @@ export const App = () => {
     },
   };
 
+  React.useEffect(() => {
+    if (scrollSync) {
+      localStorage.setItem('scrollSync', 'true');
+    } else {
+      localStorage.setItem('scrollSync', 'false');
+    }
+  }, [scrollSync]);
+
+  React.useEffect(() => {
+    if (!save) {
+      localStorage.removeItem('content');
+      localStorage.removeItem('save');
+      return;
+    }
+    localStorage.setItem('save', 'true');
+    setSaveState(prevState => {
+      if (prevState !== null && prevState !== 'saving' && prevState !== 'saved') {
+        clearTimeout(prevState);
+      }
+      return 'saving';
+    });
+    localStorage.setItem('content', content);
+    const timeoutId = setTimeout(() => setSaveState('saved'), 3000);
+    setSaveState(timeoutId);
+  }, [ content, save ]);
+
+  const SaveElement = React.useCallback(() => {
+    switch (saveState) {
+      case 'saving':
+        return <span className="text-blue-300 py-0.5">Saving...</span>;
+      case null:
+      case 'saved':
+        return (
+          <React.Fragment>
+            <input
+              type="checkbox"
+              id="id_save"
+              className="hover:cursor-pointer w-4 md:w-auto"
+              checked={save}
+              onChange={handleChangeSave}
+            />
+            <label
+              htmlFor="id_save"
+              className="hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-2 md:py-0.5"
+            >
+              Save
+            </label>
+          </React.Fragment>
+        );
+      default:
+        return <span className="text-green-500 py-0.5">Saved!</span>;
+    }
+  }, [ saveState, save ]);
+
   return (
     <React.Fragment>
       <header className="bg-white shadow">
-        <nav className="flex flex-col md:flex-row justify-between align-center px-6 py-4 md:gap-6 bg-gray-900 text-white">
+        <nav
+          className="flex flex-col md:flex-row justify-between align-center px-6 py-4 md:gap-6 bg-gray-900 text-white">
           <div className="flex flex-1 md:flex-none">
             <Link className="font-medium text-gray-100 hover:text-blue-400 flex gap-2" to="/">
               <MarkdownLogo className="w-6 h-6" />
@@ -204,8 +274,12 @@ export const App = () => {
             'mt-4',
             'md:mt-0'
           )}>
+            <div className="flex align-center gap-2 text-sm font-semibold mb-2 md:mb-0">
+              <SaveElement />
+            </div>
             <div className="flex align-center gap-2 mb-2 md:mb-0">
-              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer w-4 md:w-auto" checked={scrollSync}
+              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer w-4 md:w-auto"
+                     checked={scrollSync}
                      onChange={handleChangeScrollSync} />
               <label htmlFor="id_scrollSync"
                      className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-2 md:py-0.5">
@@ -225,7 +299,8 @@ export const App = () => {
               )}
               <span className="md:hidden py-0.5">Change orientation</span>
             </button>
-            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github" className="flex gap-2 text-white hover:text-blue-400 active:text-blue-300 mb-2 md:mb-0 py-2 md:py-0">
+            <a href="https://github.com/potasiak/preview.md" title="preview.md on Github"
+               className="flex gap-2 text-white hover:text-blue-400 active:text-blue-300 mb-2 md:mb-0 py-2 md:py-0">
               <Github className="w-4 h-4 my-1" />
               <span className=" text-sm font-semibold md:hidden py-0.5">Source on Github</span>
             </a>
