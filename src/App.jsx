@@ -24,21 +24,38 @@ import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync/src';
 
 import copy from 'copy-to-clipboard';
 import { Github } from './icons.jsx';
+import classNames from 'classnames';
 
 
 export const App = () => {
   const [ content, setContent ] = React.useState(defaultContent);
   const [ scrollSync, setScrollSync ] = React.useState(true);
+  const [ markdownCopied, setMarkdownCopied ] = React.useState(null);
+  const [ htmlCopied, setHtmlCopied ] = React.useState(null);
 
   const handleChangeScrollSync = (e) => setScrollSync(e.target.checked);
 
   const copyMarkdown = () => {
     copy(content);
+    const timeoutId = setTimeout(() => setMarkdownCopied(null), 3000);
+    setMarkdownCopied(prevTimeoutId => {
+      if (prevTimeoutId !== null) {
+        clearTimeout(prevTimeoutId);
+      }
+      return timeoutId;
+    });
   };
 
   const copyHTML = () => {
     const htmlContent = document.getElementsByClassName('markdown-body')[0];
     copy(htmlContent.outerHTML, { format: 'text/html' });
+    const timeoutId = setTimeout(() => setHtmlCopied(null), 3000);
+    setHtmlCopied(prevTimeoutId => {
+      if (prevTimeoutId !== null) {
+        clearTimeout(prevTimeoutId);
+      }
+      return timeoutId;
+    });
   };
 
   const markdownComponents = {
@@ -93,25 +110,67 @@ export const App = () => {
           </Link>
           <div className="flex align-center gap-4 ms-auto">
             <div className="flex align-center gap-2">
-              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer" checked={scrollSync} onChange={handleChangeScrollSync} />
-              <label htmlFor="id_scrollSync" className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-0.5">
+              <input type="checkbox" id="id_scrollSync" className="hover:cursor-pointer" checked={scrollSync}
+                     onChange={handleChangeScrollSync} />
+              <label htmlFor="id_scrollSync"
+                     className="text-sm font-semibold hover:text-blue-400 hover:cursor-pointer active:text-blue-300 py-0.5">
                 Scroll sync
               </label>
             </div>
-            <button
-              type="button"
-              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
-              onClick={copyMarkdown}
-            >
-              Copy Markdown
-            </button>
-            <button
-              type="button"
-              className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
-              onClick={copyHTML}
-            >
-              Copy HTML
-            </button>
+            <div className="group relative">
+              <button
+                type="button"
+                className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+                onClick={copyMarkdown}
+              >
+                Copy Markdown
+              </button>
+              <span className={classNames(
+                markdownCopied !== null ? 'opacity-100' : 'opacity-0',
+                'transition-opacity',
+                'bg-green-300',
+                'px-2',
+                'py-1',
+                'text-sm',
+                'text-green-900',
+                'shadow',
+                'rounded-md',
+                'absolute',
+                'left-1/2',
+                '-translate-x-1/2',
+                'translate-y-full',
+                'mx-auto'
+              )}>
+                Copied!
+              </span>
+            </div>
+            <div className="group relative">
+              <button
+                type="button"
+                className="text-white text-sm font-semibold hover:text-blue-400 active:text-blue-300"
+                onClick={copyHTML}
+              >
+                Copy HTML
+              </button>
+              <span className={classNames(
+                htmlCopied !== null ? 'opacity-100' : 'opacity-0',
+                'transition-opacity',
+                'bg-green-300',
+                'px-2',
+                'py-1',
+                'text-sm',
+                'text-green-900',
+                'shadow',
+                'rounded-md',
+                'absolute',
+                'left-1/2',
+                '-translate-x-1/2',
+                'translate-y-full',
+                'mx-auto'
+              )}>
+                Copied!
+              </span>
+            </div>
             <a href="https://github.com/potasiak/preview.md" title="preview.md on Github" className="my-1">
               <Github className="w-4 h-4" />
             </a>
