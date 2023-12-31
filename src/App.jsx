@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Markdown from 'react-markdown';
 
 import { defaultContent, rehypeSanitizeOptions } from './config.js';
 
@@ -15,7 +14,7 @@ import rangeParser from 'parse-numeric-range';
 import { Prism } from 'react-syntax-highlighter';
 import './prism-github.scss';
 
-import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import { EditorView } from '@uiw/react-codemirror';
 import { languages } from '@codemirror/language-data';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { githubLight } from '@uiw/codemirror-theme-github';
@@ -25,6 +24,11 @@ import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync/src';
 import copy from 'copy-to-clipboard';
 import { Markdown as MarkdownLogo, Github, Horizontal, Vertical, List } from './icons.jsx';
 import classNames from 'classnames';
+import rehypeExternalLinks from 'rehype-external-links';
+
+
+const CodeMirror = React.lazy(() => import('@uiw/react-codemirror'));
+const Markdown = React.lazy(() => import('react-markdown'));
 
 
 function getLocalStorage(key, defaultValue = null) {
@@ -139,7 +143,7 @@ export const App = () => {
     } else {
       localStorage.setItem('scrollSync', 'false');
     }
-  }, [scrollSync]);
+  }, [ scrollSync ]);
 
   React.useEffect(() => {
     if (!save) {
@@ -330,8 +334,9 @@ export const App = () => {
                 components={markdownComponents}
                 remarkPlugins={[ remarkGfm, remarkGemoji ]}
                 rehypePlugins={[
+                  [ rehypeExternalLinks, { rel: [ 'nofollow', 'noopener', 'noreferer' ] } ],
                   rehypeRaw,
-                  rehypeSanitize(rehypeSanitizeOptions)
+                  [ rehypeSanitize, rehypeSanitizeOptions ],
                 ]}
               >
                 {content}
