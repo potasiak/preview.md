@@ -313,9 +313,10 @@ export const App = () => {
       </header>
       <ScrollSync enabled={scrollSync}>
         <main
-          className={classNames('flex', 'flex-1', 'gap-4', 'p-4', 'overflow-hidden', orientation === 'vertical' ? 'flex-col' : 'flex-row')}>
+          className={classNames('flex', 'flex-1', 'gap-4', 'p-4', 'overflow-hidden', orientation === 'vertical' ? 'flex-col' : 'flex-row')}
+        >
           <ScrollSyncPane>
-            <div className="box-border flex flex-col flex-1 rounded-md shadow overflow-y-scroll">
+            <div className="box-border flex flex-col flex-1 rounded-md shadow overflow-y-scroll" data-nosnippet={true}>
               <CodeMirror
                 theme={githubLight}
                 extensions={[
@@ -328,7 +329,7 @@ export const App = () => {
             </div>
           </ScrollSyncPane>
           <ScrollSyncPane>
-            <div className="box-border flex flex-col flex-1 rounded-md shadow px-4 py-2 bg-white overflow-y-scroll">
+            <div className="box-border flex flex-col flex-1 rounded-md shadow px-4 py-2 bg-white overflow-y-scroll" data-nosnippet={true}>
               <Markdown
                 className="markdown-body"
                 components={markdownComponents}
